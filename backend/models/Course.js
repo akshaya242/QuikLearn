@@ -1,33 +1,26 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const courseSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-    unique: true,
-    maxlength: 100
-  },
-  teacher: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Teacher',
-    required: true
-  },
-  category: {
-    type: String,
-    maxlength: 100
-  },
-  description: {
-    type: String,
-    default: 'Enter description here...'
-  },
-  link: {
-    type: String,
-    maxlength: 300
-  },
-  image: {
-    type: String,
-    maxlength: 500
-  }
+const CourseSchema = new Schema({
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  category: { type: Schema.Types.ObjectId, ref: 'Category' },
+  price: { type: Number, required: true },
+  duration: { type: Number },
+  language: { type: String },
+  thumbnail: { type: String },
+  created_by: { type: Schema.Types.ObjectId, ref: 'User' },
+  sectionIds: [{ type: Schema.Types.ObjectId, ref: 'Section' }],
+  studentsEnrolled: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  rating: { type: Number, default: 0 },
+}, { timestamps: true });
+
+const CategorySchema = new Schema({
+  name: { type: String, required: true },
+  description: { type: String },
 });
 
-module.exports = mongoose.model('Course', courseSchema);
+module.exports = {
+  Course: mongoose.model('Course', CourseSchema),
+  Category: mongoose.model('Category', CategorySchema)
+};

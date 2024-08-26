@@ -1,39 +1,13 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const sectionSchema = new mongoose.Schema({
-  course_title: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Course',
-    required: true
-  },
-  title: {
-    type: String,
-    required: true
-  },
-  videolink: {
-    type: String,
-    default: "a"
-  },
-  Overview: {
-    type: String,
-    default: "a"
-  },
-  QA: {
-    type: String,
-    default: "a"
-  },
-  Notes: {
-    type: String,
-    default: "a"
-  },
-  Announcements: {
-    type: String,
-    default: "a"
-  },
-  Reviews: {
-    type: String,
-    default: "a"
-  }
-});
+const SectionSchema = new Schema({
+  courseId: { type: Schema.Types.ObjectId, ref: 'Course' },
+  title: { type: String, required: true },
+  description: { type: String },
+  videoIds: [{ type: Schema.Types.ObjectId, ref: 'Video' }],
+  pdfIds: [{ type: Schema.Types.ObjectId, ref: 'PDF' }],
+  quizIds: [{ type: Schema.Types.ObjectId, ref: 'Quiz' }],
+}, { timestamps: true });
 
-module.exports = mongoose.model('Section', sectionSchema);
+module.exports = mongoose.model('Section', SectionSchema);
